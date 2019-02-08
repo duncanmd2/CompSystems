@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ################################################################################
-# name: Madison Duncan													   #
+# name: Madison Duncan													       #
 # class: CMSC 257 - section 1 												   #
 # semester: spring 2019														   #
 # assignment one - phase 2													   #
@@ -9,11 +9,11 @@
 ################################################################################
 
 
-#-- archive() function ------------------------------------------------------#
-# prompts user for verbose options, compression options, directory containing
-# files to be archived, and files to be archived, name of tarball and creates 
-# a tar ball with given specifications 
-#----------------------------------------------------------------------------#
+#-- archive() function -------------------------------------------------------#
+# prompts user for verbose options, compression options, directory containing #
+# files to be archived, and files to be archived, name of tarball and creates # 
+# a tar ball with given specifications 										  #
+#-----------------------------------------------------------------------------#
 archive(){
 
 	# saves current directory address as a variable
@@ -124,11 +124,11 @@ archive(){
 
 } # archive() 
 
-#-- extract() function ------------------------------------------------------#
-# prompts the user for the name of the tarball file to extract from and the
-# directory for which the files should be extracted to and extracts the files
-# to the given location
-#----------------------------------------------------------------------------#
+#-- extract() function -------------------------------------------------------#
+# prompts the user for the name of the tarball file to extract from and the   #
+# directory for which the files should be extracted to and extracts the files #
+# to the given location                                                       #
+#-----------------------------------------------------------------------------#
 extract(){
 	echo input the name of archive to be extracted
 	read file_extracted
@@ -163,11 +163,12 @@ view(){
 
 	# outputs the contents of the tarball
 	tar -tf $file_viewed
+
 } # view()
 
 #-- quit() function ---------------------------------------------------------#
-# input: a string
-# if the string is ":q" then the program exits the script
+# input: a string															 #
+# if the string is ":q" then the program exits the script					 #
 #----------------------------------------------------------------------------#
 quit(){
 	if [ $1 = ":q" ]
@@ -178,27 +179,33 @@ quit(){
 
 
 # checks if call type was given by user 
+# if call type not given, script quits with error message
 if [ -z $1 ]
 then
 	echo A call type was not specified. Please try again.
 	exit
+# sets call_type variable as input from user
 else
 	call_type=$1 
 fi
 
-
+# determines call type and calls appropriate function
+# if input is archive, calls archive function 
 if [ $call_type = 'archive' ]				
 then
 	echo the call type is $call_type
 	archive
+# if input is extract, calls extract function 
 elif [ $call_type = 'extract' ]
 then
 	echo the call type is $call_type
 	extract
+# if input is view, calls view function 
 elif [ $call_type = 'view' ]
 then
 	echo the call type is $call_type
 	view
+# if call type not recognized, script quits 
 else
 	echo the call type is not recognized. Please try again.
 fi
