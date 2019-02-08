@@ -16,6 +16,15 @@
 #----------------------------------------------------------------------------#
 archive(){
 
+	# saves current directory address as a variable
+	current_dir="$PWD"
+
+	#------------------------------------------------#
+	# code help for above line from 				 #
+	# https://stackoverflow.com/questions/1636363/	 #
+	# getting-current-path-in-variable-and-using-it  #
+	#------------------------------------------------#
+
 	# prints out the options for user to chose from 
 	echo "select your options:"
 	echo "	v - show the process of archiving"
@@ -27,9 +36,6 @@ archive(){
 
 	# checks to see if user enterd the quit command 
 	quit $archive_options
-
-
-	echo the options you selected are: $archive_options
 
 	# quits if user entered both compression options 
 	if [[ $archive_options == *"z"* && $archive_options == *"j"* ]]
@@ -60,9 +66,9 @@ archive(){
 
 	if [[ $dir_extract_to == "*" ]]
 	then
-		dir_command="-C ."
+		dir_command="."
 	else
-		dir_command="-C $dir_from"
+		dir_command="$dir_from"
 	fi
 
 	file_to_add=""		# variable to hold name of read in file
@@ -87,7 +93,6 @@ archive(){
 		then
 			file_list="$file_list $file_to_add"
 		fi
-		echo the file list is $file_list
 	done
 
 
@@ -106,11 +111,15 @@ archive(){
 
 
 	# checks if tarball must be made verbosely and creates tarball 
-	if [ $archive_options == *"v"* ]
+	if [[ $archive_options == *"v"* ]]
 	then
-		tar -cvf $archive_name.tar$extension $dir_command $file_list
+		cd $dir_command
+		tar -cvf $archive_name.tar$extension $file_list
+		mv $archive_name.tar$extension $current_dir
 	else
-		tar -cf $archive_name.tar$extension $dir_command $file_list
+		cd $dir_command
+		tar -cf $archive_name.tar$extension $file_list
+		mv $archive_name.tar$extension $current_dir
 	fi
 
 } # archive() 
@@ -153,7 +162,7 @@ view(){
 	quit $file_viewed
 
 	# outputs the contents of the tarball
-	tar -tvf $file_viewed
+	tar -tf $file_viewed
 } # view()
 
 #-- quit() function ---------------------------------------------------------#
