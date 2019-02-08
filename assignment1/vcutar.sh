@@ -47,12 +47,12 @@ archive(){
 	# checks which compression extension to use 
 	if [[ $archive_options == *"z"* ]]
 	then
-		extension=".gz"
+		extension="gz"
 	elif [[ $archive_options == *"j"* ]]
 	then
-		extension=".bz2"
+		extension="bz2"
 	else
-		entension=""
+		entension="ar"
 	fi
 
 	# prompts user to enter name of directory containing files
@@ -108,12 +108,14 @@ archive(){
 	if [[ $dir_from != "*" ]]
 	then
 		cd $dir_from
-		tar -$tag $archive_name.tar$extension $file_list
-		mv $archive_name.tar$extension $current_dir
-	else
-		tar -$tag $archive_name.tar$extension $file_list
-	fi
+		tar $tag $archive_name.t$extension $file_list
+		tarball_path=$PWD
+		cd ~/..
 
+		mv "$tarball_path/$archive_name.t$extension" $current_dir
+	else
+		tar $tag $archive_name.t$extension $file_list
+	fi
 } # archive() 
 
 #-- extract() function -------------------------------------------------------#
@@ -155,7 +157,6 @@ view(){
 
 	# outputs the contents of the tarball
 	tar -tf $file_viewed
-
 } # view()
 
 #-- quit() function ----------------------------------------------------------#
@@ -168,7 +169,6 @@ quit(){
 		exit
 	fi
 } # quit()
-
 
 # checks if call type was given by user 
 # if call type not given, script quits with error message
