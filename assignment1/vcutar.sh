@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ################################################################################
-# name: Madison Duncan 														   #
+# name: Madison Duncan													   #
 # class: CMSC 257 - section 1 												   #
 # semester: spring 2019														   #
 # assignment one - phase 2													   #
@@ -59,7 +59,7 @@ archive(){
 	quit $dir_from
 
 	if [[ $dir_extract_to == "*" ]]
-	then 
+	then
 		dir_command="-C ."
 	else
 		dir_command="-C $dir_from"
