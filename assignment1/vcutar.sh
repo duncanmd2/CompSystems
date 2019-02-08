@@ -64,13 +64,6 @@ archive(){
 	# checks to see if user enterd the quit command 
 	quit $dir_from
 
-	if [[ $dir_extract_to == "*" ]]
-	then
-		dir_command="."
-	else
-		dir_command="$dir_from"
-	fi
-
 	file_to_add=""		# variable to hold name of read in file
 	file_list=""		# string of file names to be included in archive
 
@@ -95,9 +88,6 @@ archive(){
 		fi
 	done
 
-
-
-
 	# prompts user for the name of archive
 	echo input the name of the archive
 
@@ -107,19 +97,21 @@ archive(){
 	# checks to see if user enterd the quit command 
 	quit $archive_name
 
-
-
-
 	# checks if tarball must be made verbosely and creates tarball 
 	if [[ $archive_options == *"v"* ]]
 	then
-		cd $dir_command
-		tar -cvf $archive_name.tar$extension $file_list
+		tag="cvf"
+	else
+		tag="cf"
+	fi
+
+	if [[ $dir_from != "*" ]]
+	then
+		cd $dir_from
+		tar -$tag $archive_name.tar$extension $file_list
 		mv $archive_name.tar$extension $current_dir
 	else
-		cd $dir_command
-		tar -cf $archive_name.tar$extension $file_list
-		mv $archive_name.tar$extension $current_dir
+		tar -$tag $archive_name.tar$extension $file_list
 	fi
 
 } # archive() 
@@ -140,16 +132,16 @@ extract(){
 	echo "the directory to be extracted to is $dir_extract_to"
 	if [[ $dir_extract_to == "*" ]]
 	then
-		tar -xvf $file_extracted -C .
+		tar -xf $file_extracted -C .
 	else
-		tar -xvf $file_extracted -C $dir_extract_to
+		tar -xf $file_extracted -C $dir_extract_to
 	fi
 } # extract()
 
-#-- view() function ---------------------------------------------------------#
-# prompts the user for the name of the tarball file they wish to view the 	 #
-# contents of, and then outputs the files in the tarball					 #
-#----------------------------------------------------------------------------#
+#-- view() function ----------------------------------------------------------#
+# prompts the user for the name of the tarball file they wish to view the 	  #
+# contents of, and then outputs the files in the tarball					  #
+#-----------------------------------------------------------------------------#
 view(){
 
 	# ask for tarball file name
@@ -166,16 +158,23 @@ view(){
 
 } # view()
 
-#-- quit() function ---------------------------------------------------------#
-# input: a string															 #
-# if the string is ":q" then the program exits the script					 #
-#----------------------------------------------------------------------------#
+#-- quit() function ----------------------------------------------------------#
+# input: a string															  #
+# if the string is ":q" then the program exits the script					  #
+#-----------------------------------------------------------------------------#
 quit(){
-	if [ $1 = ":q" ]
+	if [[ $1 = ":q" ]]
 	then
 		exit
 	fi
 } # quit()
+
+move_tarball(){
+	if [[ $1 != "." ]]
+	then
+		mv $archive_name.tar$extension $current_dir
+	fi	
+} #move_tarball()
 
 
 # checks if call type was given by user 
@@ -193,17 +192,14 @@ fi
 # if input is archive, calls archive function 
 if [ $call_type = 'archive' ]				
 then
-	echo the call type is $call_type
 	archive
 # if input is extract, calls extract function 
 elif [ $call_type = 'extract' ]
 then
-	echo the call type is $call_type
 	extract
 # if input is view, calls view function 
 elif [ $call_type = 'view' ]
 then
-	echo the call type is $call_type
 	view
 # if call type not recognized, script quits 
 else
