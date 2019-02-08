@@ -169,13 +169,6 @@ quit(){
 	fi
 } # quit()
 
-move_tarball(){
-	if [[ $1 != "." ]]
-	then
-		mv $archive_name.tar$extension $current_dir
-	fi	
-} #move_tarball()
-
 
 # checks if call type was given by user 
 # if call type not given, script quits with error message
